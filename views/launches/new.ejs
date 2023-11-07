@@ -1,0 +1,63 @@
+
+
+<% layout('layouts/boilerplate') %>
+<div class="container mt-5">
+    <h1>New Launch</h1>
+    <form action="/launches" method="POST" class="validate-form" enctype="multipart/form-data" novalidate>
+        <div class="mb-3">
+            <label for="organization" class="form-label">Organization</label>
+            <input type="text" class="form-control" id="organization" name="launch[organization]" required>
+            <div class="valid-feedback">
+                Looks Good!
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="launch[name]" required>
+            <div class="valid-feedback">
+                Looks Good!
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" class="form-control" id="location" name="launch[location]" required>
+            <div class="valid-feedback">
+                Looks Good!
+            </div>
+        </div>
+        <div class="mb-3">
+            <!-- <label for="date" class="form-label">Date and Time</label>
+            <div class="d-flex">
+                <input type="date" id="date" class="form-control me-2" name="launch[date]" value="2023-09-05" min="2023-09-05" required>
+                <input type="time" id="time" class="form-control" name="launch[time]" required>
+            </div> -->
+            <label for="datetime" class="form-label">Date and Time:</label>
+            <input type="datetime-local" id="datetime" class="form-control" name="launch[datetime]" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" class="form-control" name="launch[description]" rows="5" cols="33" required>
+                Enter launch description...
+            </textarea>
+        </div>
+        <!-- <div class="mb-3">
+            <label for="image" class="form-label">Image Link</label>
+            <input type="text" class="form-control" id="image" name="launch[image]" required>
+            <div class="valid-feedback">
+                Looks Good!
+            </div>
+        </div> -->
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" name="image" class="form-control" id="image">
+        </div>    
+        <button type="submit" class="btn btn-primary">Add Launch</button>
+    </form>
+    <div class="mt-3">
+        <a href="/launches" class="btn btn-secondary">All Launches</a>
+    </div>
+</div>
+
+
+
+

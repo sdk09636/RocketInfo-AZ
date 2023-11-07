@@ -1,0 +1,53 @@
+<% layout('layouts/boilerplate') %>
+<div class="container mt-5">
+    <h1>Edit Launch</h1>
+    <form action="/launches/<%= launch._id %>?_method=PUT" method="POST" class="validate-form" novalidate>
+        <div class="mb-3">
+            <label for="organization" class="form-label">Organization</label>
+            <input type="text" class="form-control" id="organization" name="launch[organization]" value="<%= launch.organization %>" required>
+            <div class="valid-feedback">
+                Looks Good!
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="launch[name]" value="<%= launch.name %>" required>
+            <div class="valid-feedback">
+                Looks Good!
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" class="form-control" id="location" name="launch[location]" value="<%= launch.location %>" required>
+            <div class="valid-feedback">
+                Looks Good!
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="d-flex">
+                <!-- <input type="date" id="date" class="form-control me-2" name="launch[date]" value="<%= launch.date %>" required>
+                <input type="time" id="time" class="form-control" name="launch[time]" value="<%= launch.time %>" required> -->
+                <label for="datetime" class="form-label">Date and Time:</label>
+                <input type="datetime-local" id="datetime" class="form-control" name="launch[datetime]" value="<%= launch.datetime.toISOString().slice(0, 16) %>" required>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" class="form-control" name="launch[description]" rows="5" cols="33">
+                <%= launch.description %>
+            </textarea>
+        </div>
+        <!-- <div class="mb-3">
+            <label for="image" class="form-label">Image Link</label>
+            <input type="text" class="form-control" id="image" name="launch[image]" value="<%= launch.image %>" required>
+            <div class="valid-feedback">
+                Looks Good!
+            </div>
+        </div> -->
+        <button type="submit" class="btn btn-primary">Update Launch</button>
+    </form>
+    <div class="mt-3">
+        <a href="/launches" class="btn btn-secondary">All Launches</a>
+    </div>
+</div>
+

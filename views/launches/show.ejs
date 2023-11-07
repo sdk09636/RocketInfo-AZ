@@ -1,0 +1,81 @@
+<% layout('layouts/boilerplate') %>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h1><%= launch.organization %></h1>
+            <h2><%= launch.name %></h2>
+            <h3><%= launch.location %></h3>
+            <h5>Author: <%= launch.author.username %></h5>
+            <p><%= launch.description %></p>
+        </div>
+        <div class="col-md-6">
+            <img crossorigin="anonymous" src="<%= launch.image.url %>" class="img-fluid" alt="Launch Image">
+        </div>
+    </div>
+    <div class="row mt-3">
+        <% if(currentUser && launch.author.equals(currentUser)) {%>
+        <div class="col-md-6">
+            <form action="/launches/<%= launch._id %>?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+            <div>
+                <a href="/launches/<%= launch._id %>/edit" class="btn btn-primary">Edit</a>
+            </div>   
+        </div>
+        <% } %>
+        <div class="col-md-6">
+            <footer>
+                <a href="/launches" class="btn btn-secondary">All Launches</a>
+            </footer>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <h3 class="mb-3">Comments</h3>
+            <% if(currentUser) {%>
+            <form class="mb-3 validate-form" action="/launches/<%= launch._id %>/comments" method="POST" novalidate>
+                <div class="mb-3">
+                    <label class="form-label" for="body">Add a Comment:</label>
+                    <textarea class="form-control" name="comment[body]" id="body" cols="30" rows="3" required></textarea>
+                </div>
+                <button class="btn btn-success" type="submit">Submit</button>
+            </form>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <% for(let comment of launch.comments) { %>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <form action="/launches/<%= launch._id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
+                        <button type="submit" class="btn btn-primary mr-2">
+                            <% if(currentUser && comment.usersLiked.includes(currentUser._id)) { %>
+                                Unlike
+                            <% } else { %>
+                                Like
+                            <% } %>
+                        </button>
+                    </form>
+                    <p class="card-text mt-3"><strong>Likes:</strong> <%= comment.likes %></p>
+                    <p class="card-text"><strong>Comment Text:</strong> <%= comment.body %></p>
+                    <h6 class="card-subtitle mb-2 text-muted">By <%= comment.author.username %></h6>
+                    <% if(currentUser && comment.author.equals(currentUser)) {%>
+                    <form action="/launches/<%= launch._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <% } %>
+    </div>
+</div>
+
+
+
+
+
+
+

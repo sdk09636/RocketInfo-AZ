@@ -1,0 +1,56 @@
+<% layout('layouts/boilerplate') %>
+<h1>Launches</h1>
+<p>*using sample data</p>
+<div class="row">
+    <% for(let launch of launches) { %>
+        <div class="col-md-12 mb-4">
+            <div class="card launch-card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h5 class="card-title"><a href="/launches/<%= launch._id %>"><%= launch.name %></a></h5>
+                            <p class="card-text"><strong>Location:</strong> <%= launch.location %></p>
+                            <p class="card-text">
+                                <strong>Date:</strong> <%= convertDate(launch.datetime)[0] %>
+                                <strong>Time:</strong> <%= convertDate(launch.datetime)[1] %>
+                                <strong>Time Zone:</strong> <%= convertDate(launch.datetime)[2] %>
+                            </p>
+                        </div>
+                        <div class="countdown-timer col-md-3" data-launch-time="<%= launch.datetime %>"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</div>
+
+<script>
+    const countdownElements = document.querySelectorAll('.countdown-timer');
+
+    countdownElements.forEach(element => {
+        const launchTime = new Date(element.getAttribute('data-launch-time'));
+        updateCountdownTimer(element, launchTime);
+        setInterval(() => updateCountdownTimer(element, launchTime), 1000);
+    });
+
+    function updateCountdownTimer(element, launchTime) {
+        const now = new Date();
+        let timeRemaining = launchTime - now;
+        let a = true;
+        if(timeRemaining < 0) {
+            timeRemaining = -timeRemaining;
+            a = false;
+        }
+        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+        if(a) {
+            element.innerHTML = `<strong>Countdown:</strong> T - ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+        else {
+            element.innerHTML = `<strong>Countdown:</strong> T + ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+    }
+</script>
+
