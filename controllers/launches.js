@@ -4,8 +4,36 @@ const { cloudinary } = require('../cloudinary');
 const { convertDate } = require('../xtrafunctions');
 
 module.exports.index = async (req, res, next) => {
-    const launches = await Launch.find({});
-    res.render('launches/index', { launches, convertDate });
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = 8;
+    const totalUpcomingLaunches = await Launch.countDocuments({ datetime: { $gte: new Date() } });
+    const rem = totalUpcomingLaunches % pageSize;
+    const pagesUpcomingL = Math.ceil(totalUpcomingLaunches / pageSize);
+    const totalLaunches = await Launch.countDocuments();
+    const totalPages = Math.ceil(totalLaunches / pageSize);
+    const l1 = await Launch.find({ datetime: { $gte: new Date() } })
+        .sort({ datetime: 1 })
+        .skip((page - 1) * pageSize)
+        .limit(pageSize);
+    const pastLaunchesCount = Math.max(0, pageSize - l1.length);
+    var launches;
+    if(pastLaunchesCount <= 0) {
+        launches = l1;
+    }
+    else if(pastLaunchesCount < pageSize) {
+        const l2 = await Launch.find({ datetime: { $lt: new Date() } })
+            .sort({ datetime: -1 })
+            .limit(pageSize - rem);
+        launches = l1.concat(l2);
+    }
+    else if(pastLaunchesCount == pageSize) {
+        const l2 = await Launch.find({ datetime: { $lt: new Date() } })
+            .sort({ datetime: -1 })
+            .skip((page - pagesUpcomingL - 1) * pageSize + (pageSize - rem))
+            .limit(pastLaunchesCount);
+        launches = l1.concat(l2);
+    }
+    res.render('launches/index', { launches, convertDate, page, totalPages, pageSize});
 };
 
 module.exports.renderNewForm = (req, res) => {

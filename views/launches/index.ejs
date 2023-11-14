@@ -24,6 +24,18 @@
     <% } %>
 </div>
 
+<div class="pagination justify-content-center mb-4">
+    <% if (page > 1) { %>
+        <a href="?page=<%= page - 1 %>" class="btn btn-outline-primary mx-2">&laquo; Previous</a>
+    <% } %>
+    <div class="pagination-info">
+        <p><%= (page - 1) * pageSize %> to <%= page * pageSize %></p>
+    </div>
+    <% if (page < totalPages) { %>
+        <a href="?page=<%= page + 1 %>" class="btn btn-outline-primary mx-2">Next &raquo;</a>
+    <% } %>
+</div>
+
 <script>
     const countdownElements = document.querySelectorAll('.countdown-timer');
 
